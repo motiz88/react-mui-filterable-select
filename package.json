@@ -1,0 +1,28 @@
+{
+  "name": "mui-filterable-select",
+  "version": "0.1.0-git",
+  "description": "A filterable select control for use with material-ui.",
+  "main": "dist/MuiFilterableSelect.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "node_modules/.bin/jsx --harmony src/ dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/motiz88/react-mui-filterable-select"
+  },
+  "author": "Moti Zilberman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/motiz88/react-mui-filterable-select/issues"
+  },
+  "homepage": "https://github.com/motiz88/react-mui-filterable-select",
+  "devDependencies": {
+    "material-ui": ">=0.7.1",
+    "react": ">=0.12.0",
+    "react-tools": "^0.13.0"
+  },
+  "dependencies": {
+    "underscore": "^1.8.2"
+  }
+}
