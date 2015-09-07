@@ -1,6 +1,6 @@
 {
   "name": "mui-filterable-select",
-  "version": "0.1.0-git",
+  "version": "0.1.1-git",
   "description": "A filterable select control for use with material-ui.",
   "main": "dist/MuiFilterableSelect.js",
   "scripts": {

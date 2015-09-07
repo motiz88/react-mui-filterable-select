@@ -18,7 +18,7 @@ var MuiFilterableValueSelect = module.exports = React.createClass({
 	        }
 		},
 		matchPos: React.PropTypes.oneOf(['any','start']),
-		matchProp: React.PropTypes.oneOf(['any','value','label']),
+		matchProp: React.PropTypes.string,
 		onChange: React.PropTypes.func
     },
     getDefaultProps() {
