@@ -1,11 +1,12 @@
 {
   "name": "mui-filterable-select",
-  "version": "0.1.1-git",
+  "version": "0.2.0-git",
   "description": "A filterable select control for use with material-ui.",
   "main": "dist/MuiFilterableSelect.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "node_modules/.bin/jsx --harmony src/ dist/"
+    "build": "node_modules/.bin/babel src -d dist",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,11 +19,21 @@
   },
   "homepage": "https://github.com/motiz88/react-mui-filterable-select",
   "devDependencies": {
-    "material-ui": ">=0.7.1",
-    "react": ">=0.12.0",
-    "react-tools": "^0.13.0"
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "material-ui": "^0.15.1",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-tap-event-plugin": "^1.0.0"
+  },
+  "peerDependencies": {
+    "material-ui": "^0.15.1",
+    "react": "^15.x.x"
   },
   "dependencies": {
-    "underscore": "^1.8.2"
+    "underscore": "^1.8.3"
   }
 }

@@ -1,110 +1,104 @@
-var React = require('react');
-var _ = require('underscore');
-var mui = require('material-ui');
-var DropDownMenu = mui.DropDownMenu;
+import React, { Component } from 'react';
+import _ from 'underscore';
+import mui, { DropDownMenu, MenuItem } from 'material-ui';
 
-var MuiFilterableValueSelect = module.exports = React.createClass({
-    displayName: 'MuiFilterableValueSelect',
-    propTypes: {
+export default class MuiFilterableValueSelect extends Component {
+    static displayName = 'MuiFilterableValueSelect';
+    static propTypes = {
         options: React.PropTypes.array,
         filter(props, propName, componentName) {
-	        try {
-	        	_makeFilterFunc(props);
+            try {
+                _makeFilterFunc(props);
                 _makeFilterMapFunc(props);
-	        }
-	        catch (e)
-	        {
-	        	return e;
-	        }
-		},
-		matchPos: React.PropTypes.oneOf(['any','start']),
-		matchProp: React.PropTypes.string,
-		onChange: React.PropTypes.func
-    },
-    getDefaultProps() {
-    	return {
-    		options: [],
-    		filter: undefined,
-    		matchPos: "any",
-    		onChange: undefined
-    	};
-    },
-    _stringFilter: _stringFilter,
-    _regexFilter: _regexFilter,
-    _makeFilterFunc: _makeFilterFunc,
-    _makeFilterMapFunc: _makeFilterMapFunc,
+            }
+            catch (e)
+            {
+                return e;
+            }
+        },
+        matchPos: React.PropTypes.oneOf(['any','start']),
+        matchProp: React.PropTypes.string,
+        onChange: React.PropTypes.func
+    };
+    static defaultProps = {
+        options: [],
+        filter: undefined,
+        matchPos: "any",
+        onChange: undefined
+    };
+    state = {};
     _updateFilter(props) {
-    	this._filterFunc = this._makeFilterFunc(props);
-    	if (this._filterFunc)
-    		this._filterFunc=this._filterFunc.bind(this);
-    	this._filterMapFunc = this._makeFilterMapFunc(props);
-    	if (this._filterMapFunc)
-    		this._filterMapFunc=this._filterMapFunc.bind(this);
-    },
+        this._filterFunc = _makeFilterFunc(props);
+        if (this._filterFunc)
+            this._filterFunc=this._filterFunc.bind(this);
+        this._filterMapFunc = _makeFilterMapFunc(props);
+        if (this._filterMapFunc)
+            this._filterMapFunc=this._filterMapFunc.bind(this);
+    }
     componentWillReceiveProps(nextProps) {
         this._updateFilter(nextProps);
-    },
+    }
     componentWillMount() {
         this._updateFilter(this.props);
         this._performFilter(this.props);
-    	this.setState({value: this.props.defaultValue});
-    },
+        this.setState({value: this.props.defaultValue});
+    }
     _propOrState(key) {
-    	return this.props[key] || this.state[key];
-    },
+        return this.props[key] || this.state[key];
+    }
     _initiateValueChange(opt) {
-    	if (opt && (typeof opt !== 'string'))
-    		opt = opt.value;
-    	var emitChange = () => {
-    		if (typeof this.props.onChange === 'function')
-    			this.props.onChange(opt);
-    	};
-    	var isControlled = (this.props.value !== undefined);
-    	if (!isControlled)
-    		this.setState({value: opt}, emitChange);
-    	else
-    		emitChange();
-    },
-    _handleChange(e, selectedIndex, menuItem) {
-    	this._initiateValueChange(menuItem.payload);
-    },
+        if (opt && (typeof opt !== 'string'))
+            opt = opt.value;
+        var emitChange = () => {
+            if (typeof this.props.onChange === 'function')
+                this.props.onChange(opt);
+        };
+        var isControlled = (this.props.value !== undefined);
+        if (!isControlled)
+            this.setState({value: opt}, emitChange);
+        else
+            emitChange();
+    }
+    _handleChange = (e, selectedIndex, value) => {
+        this._initiateValueChange(value);
+    }
     _performFilter(nextProps) {
-		var options = [];
-    	if (nextProps.options && nextProps.options.length)
-    		options = nextProps.options;
-    	if (this._filterFunc)
-    	{
-    		if (this._filterMapFunc)
-    			options = options.filter((option) => this._filterFunc(this._filterMapFunc(option)));
+        var options = [];
+        if (nextProps.options && nextProps.options.length)
+            options = nextProps.options;
+        if (this._filterFunc)
+        {
+            if (this._filterMapFunc)
+                options = options.filter((option) => this._filterFunc(this._filterMapFunc(option)));
             else
                 options = options.filter(this._filterFunc);
-		}
-		this._filteredOptions = options;
-    },
+        }
+        this._filteredOptions = options;
+    }
     componentWillUpdate(nextProps, nextState) {
-    	this._performFilter(nextProps);
-	    var nextValue = nextProps.value || nextState.value;
-	    if (this._filteredOptions.length && !_.contains(this._filteredOptions.map(opt => (typeof opt === 'string')?opt:opt.value),nextValue))
-	    	this._initiateValueChange(this._filteredOptions.length ? this._filteredOptions[0] : undefined);
-    },
-    componentDidMount: function () {
+        this._performFilter(nextProps);
+        var nextValue = nextProps.value || nextState.value;
+        if (this._filteredOptions.length && !_.contains(this._filteredOptions.map(opt => (typeof opt === 'string')?opt:opt.value),nextValue))
+            this._initiateValueChange(this._filteredOptions.length ? this._filteredOptions[0] : undefined);
+    }
+    componentDidMount() {
         this._performFilter(this.props);
         var nextValue = this.props.value || this.state.value;
         if (this._filteredOptions.length && !_.contains(this._filteredOptions.map(opt => (typeof opt === 'string')?opt:opt.value),nextValue))
-            this._initiateValueChange(this._filteredOptions.length ? this._filteredOptions[0] : undefined);  
-    },
+            this._initiateValueChange(this._filteredOptions.length ? this._filteredOptions[0] : undefined);
+    }
     render() {
-        var selectedIndex = this._filteredOptions
-                .map(opt => typeof opt === 'string' ? opt : opt.value)
-                .indexOf(this._propOrState('value'));
-        if (selectedIndex < 0)
-            selectedIndex = 0;
+        const value = this._propOrState('value');
         return (
-			<DropDownMenu {...this.props} onChange={this._handleChange}
-            selectedIndex = {selectedIndex}
-            menuItems = {
+            <DropDownMenu
+            {...this.props}
+                onChange={this._handleChange}
+                value={value}
+                autoWidth={true}
+            >
+            {
                 this._filteredOptions
-                    .map(opt => {
+                    .map((opt, index) => {
                         var value, label;
                         if (typeof opt === 'string')
                             value=label=opt;
@@ -113,14 +107,13 @@ var MuiFilterableValueSelect = module.exports = React.createClass({
                             value=opt.value;
                             label=opt.label;
                         }
-                        return {payload: value || '', text: label || ''};
+                        return <MenuItem key={value || index} value={value} primaryText={label} />;
                     })
             }
-            autoWidth={true}
-            />
+            </DropDownMenu>
         );
     }
-});
+};
 
 function _makeFilterFunc(props) {
     var filter = props.filter;
