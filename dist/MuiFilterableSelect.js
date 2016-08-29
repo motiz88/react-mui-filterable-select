@@ -16,11 +16,17 @@ var _underscore = require('underscore');
 
 var _underscore2 = _interopRequireDefault(_underscore);
 
-var _materialUi = require('material-ui');
+var _DropDownMenu = require('material-ui/DropDownMenu');
 
-var _materialUi2 = _interopRequireDefault(_materialUi);
+var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
+
+var _MenuItem = require('material-ui/MenuItem');
+
+var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -120,9 +126,18 @@ var MuiFilterableValueSelect = function (_Component) {
         key: 'render',
         value: function render() {
             var value = this._propOrState('value');
+            var _props = this.props;
+            var options = _props.options;
+            var filter = _props.filter;
+            var matchPos = _props.matchPos;
+            var matchProp = _props.matchProp;
+            var onChange = _props.onChange;
+
+            var props = _objectWithoutProperties(_props, ['options', 'filter', 'matchPos', 'matchProp', 'onChange']);
+
             return _react2.default.createElement(
-                _materialUi.DropDownMenu,
-                _extends({}, this.props, {
+                _DropDownMenu2.default,
+                _extends({}, props, {
                     onChange: this._handleChange,
                     value: value,
                     autoWidth: true
@@ -133,7 +148,7 @@ var MuiFilterableValueSelect = function (_Component) {
                         value = opt.value;
                         label = opt.label;
                     }
-                    return _react2.default.createElement(_materialUi.MenuItem, { key: value || index, value: value, primaryText: label });
+                    return _react2.default.createElement(_MenuItem2.default, { key: value || index, value: value, primaryText: label });
                 })
             );
         }

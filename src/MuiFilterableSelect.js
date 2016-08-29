@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'underscore';
-import mui, { DropDownMenu, MenuItem } from 'material-ui';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 export default class MuiFilterableValueSelect extends Component {
     static displayName = 'MuiFilterableValueSelect';
@@ -89,9 +90,10 @@ export default class MuiFilterableValueSelect extends Component {
     }
     render() {
         const value = this._propOrState('value');
+        const {options, filter, matchPos, matchProp, onChange, ...props} = this.props;
         return (
             <DropDownMenu
-            {...this.props}
+            {...props}
                 onChange={this._handleChange}
                 value={value}
                 autoWidth={true}
